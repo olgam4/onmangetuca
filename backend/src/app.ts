@@ -1,22 +1,21 @@
+import setup from '@src/context/inversify.config'
+
 import dotenv from 'dotenv'
-import express from 'express'
+import Server from '@src/Server'
+import IRecipeRepository, { IRecipeRepositoryType } from './domain/IRecipeRepository'
+import AppService from './appService/recipe/appService'
 
 dotenv.config({
   path: `.env`
 })
 
-class Server {
-  public app = express()
-
-  constructor() {
-    this.app.get('/heartbeat', (_, res) => {
-      const now: Date = new Date()
-      res.send(`${now.toString()}`)
-    })
-  }
-}
+const container = setup()
 
 const server = new Server()
+
+console.log(container.get<IRecipeRepository>(IRecipeRepositoryType))
+const test = new AppService()
+console.log(test.all)
 
 ;((port = process.env.APP_PORT || 5000) => {
   server.app.listen(port, () => {
