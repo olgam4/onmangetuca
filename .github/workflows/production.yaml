@@ -11,17 +11,24 @@ jobs:
     steps:
       - name: 🛎 Checkout
         uses: actions/checkout@v2
-
       - name: 🚀 Deploy backend
         uses: akhileshns/heroku-deploy@v3.12.12
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "onmangetuca-backend"
           heroku_email: ${{secrets.HEROKU_EMAIL}}
-
-      - name: 🛳  Deploy frontend
-        uses: akhileshns/heroku-deploy@v3.12.12
+      - name: 🛠 Install and Build frontend
+        run: |
+          cd frontend
+          yarn install
+          yarn build
+      - name: 🛳 Deploy frontend to S3
+        uses: jakejarvis/s3-sync-action@master
         with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "onmangetuca-frontend"
-          heroku_email: ${{secrets.HEROKU_EMAIL}}
+          args: --acl public-read --delete
+        env:
+          AWS_S3_BUCKET: ${{ secrets.AWS_PRODUCTION_BUCKET_NAME }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          SOURCE_DIR: "frontend/build"
