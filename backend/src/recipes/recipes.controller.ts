@@ -8,11 +8,13 @@ export class RecipesController {
 
   @Post()
   async createRecipe(@Body() recipe: CreateRecipeDto) {
+    console.log('> Create a recipe with', recipe)
     return this.recipesService.create(recipe)
   }
 
   @Get()
   async getAllRecipes() {
+    console.log('> Getting all recipes...')
     return this.recipesService.findAll()
   }
 }
