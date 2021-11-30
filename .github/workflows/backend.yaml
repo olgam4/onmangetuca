@@ -1,0 +1,20 @@
+name: Deploy to Production 🚢
+
+on:
+  push:
+    branches:
+      - production-baby
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🛎 Checkout
+        uses: actions/checkout@v2
+      - name: 🚀 Deploy backend
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "onmangetuca-backend"
+          heroku_email: "olivier@glo.quebec"
+

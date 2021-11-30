@@ -3,8 +3,11 @@
   "version": "0.0.1",
   "description": "",
   "author": "",
-  "private": true,
-  "license": "UNLICENSED",
+  "private": false,
+  "license": "MIT",
+  "engines": {
+    "node": ">=12.20.0"
+  },
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
