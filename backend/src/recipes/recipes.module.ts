@@ -10,8 +10,7 @@ import { RecipesService } from './recipes.service'
     {
       provide: 'RecipeRepository',
       useClass: InMemoryRecipeRepository,
-    }
+    },
   ],
 })
 export class RecipesModule {}
-

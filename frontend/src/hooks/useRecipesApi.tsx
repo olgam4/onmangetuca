@@ -1,12 +1,5 @@
-import axios from 'axios'
 import { useEffect, useState } from 'react'
-
-const instance = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
-  headers: {
-    'Content-Type': 'application/json'
-  },
-})
+import instance from '../api/axios'
 
 interface Recipe {
   name: string

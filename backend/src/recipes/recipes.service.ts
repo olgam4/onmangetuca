@@ -15,7 +15,9 @@ const toDto = (recipe: Recipe) => {
 
 @Injectable()
 export class RecipesService {
-  constructor(@Inject('RecipeRepository') private recipesRepository: RecipeRepository) {}
+  constructor(
+    @Inject('RecipeRepository') private recipesRepository: RecipeRepository,
+  ) {}
 
   create(createRecipeDto: CreateRecipeDto) {
     const recipe = fromDto(createRecipeDto)
