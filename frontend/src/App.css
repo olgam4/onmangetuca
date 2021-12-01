@@ -1,6 +1,26 @@
 .App {
   display: flex;
   min-height: 100vh;
+  flex-direction: column;
+}
+
+.App nav {
+  height: 60px;
+}
+
+.App > .content {
+  flex: 1;
+  display: flex;
+}
+
+.content > * {
+  flex: 1;
+  display: flex;
+}
+
+main: {
+  flex: 1;
+  display: flex;
 }
 
 .toast {

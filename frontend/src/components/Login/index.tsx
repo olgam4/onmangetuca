@@ -1,12 +1,17 @@
 import { useState } from "react"
+import { useLocation, useNavigate } from 'react-router-dom'
 import { toast } from "react-toastify"
 
 import useUser from "hooks/useUser"
+import useAuth from "hooks/useAuth"
 
 import style from "./style.module.css"
 
 const Login = () => {
-  const { logout, login } = useUser()
+  const { login } = useUser()
+  const { state } = useLocation()
+  const { login: loginAuth } = useAuth()
+  const navigate = useNavigate()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
@@ -40,6 +45,11 @@ const Login = () => {
     })
     setPassword('')
     setUsername('')
+    loginAuth().then(
+      () => {
+        navigate(state.from || '/recipes')
+      }
+    )
   }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
