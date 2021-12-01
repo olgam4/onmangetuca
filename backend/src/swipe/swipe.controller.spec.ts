@@ -1,18 +1,18 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { SwipeController } from './swipe.controller';
+import { Test, TestingModule } from '@nestjs/testing'
+import { SwipeController } from './swipe.controller'
 
 describe('SwipeController', () => {
-  let controller: SwipeController;
+  let controller: SwipeController
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [SwipeController],
-    }).compile();
+    }).compile()
 
-    controller = module.get<SwipeController>(SwipeController);
-  });
+    controller = module.get<SwipeController>(SwipeController)
+  })
 
   it('should be defined', () => {
-    expect(controller).toBeDefined();
-  });
-});
+    expect(controller).toBeDefined()
+  })
+})

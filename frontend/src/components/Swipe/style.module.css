@@ -1,0 +1,25 @@
+.session {
+  flex: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.cardContainer {
+  position: relative;
+  height: 300px;
+  width: 300px;
+  margin-bottom: 20px;
+}
+
+.card {
+  height: 300px;
+  width: 300px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin: -10px;
+  padding: 10px;
+}

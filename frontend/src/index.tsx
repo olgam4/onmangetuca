@@ -25,8 +25,12 @@ ReactDOM.render(
                     <Recipes />
                   </RequireAuth>
                 } />
+              <Route path="swipe" element={
+                  <RequireAuth>
+                    <Swipe />
+                  </RequireAuth>
+                } />
               <Route path="login" element={<Login />} />
-              <Route path="swipe" element={<Swipe />} />
             </Route>
           </Routes>
         </UserProvider>

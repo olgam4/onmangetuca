@@ -16,9 +16,9 @@ import * as Nominatim from 'nominatim-client'
     {
       provide: 'Nominatim',
       useFactory: () => {
-        return  Nominatim.createClient({
+        return Nominatim.createClient({
           useragent: 'restaurant-finder',
-          referer: 'https://localhost:3000'
+          referer: 'https://localhost:3000',
         })
       },
     },

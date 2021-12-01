@@ -14,13 +14,15 @@ export class OpenSourceRestaurantFinder implements RestaurantFinder {
   }
 
   private getRestaurants(lat: number, lng: number): Promise<Restaurant[]> {
-    return this.nominatimClient.search({
-      q: `${lat} ${lng} restaurant`,
-      addressdetails: 1,
-    }).then((result) => {
-      return result.map((restaurantDto) => ({
-        name: restaurantDto.display_name,
-      }))
-    })
+    return this.nominatimClient
+      .search({
+        q: `${lat} ${lng} restaurant`,
+        addressdetails: 1,
+      })
+      .then((result) => {
+        return result.map((restaurantDto) => ({
+          name: restaurantDto.display_name,
+        }))
+      })
   }
 }

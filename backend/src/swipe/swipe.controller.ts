@@ -1,14 +1,17 @@
-import { Controller, Post } from '@nestjs/common';
+import { Controller, Post, UseGuards } from '@nestjs/common'
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard'
 
 @Controller('swipe')
 export class SwipeController {
-  @Post('/like')
+  @UseGuards(JwtAuthGuard)
+  @Post('like')
   like(): string {
-    return 'Hello World!';
+    return 'Hello World!'
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('dislike')
   dislike(): string {
-    return 'Hello World!';
+    return 'Hello World!'
   }
 }

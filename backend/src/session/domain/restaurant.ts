@@ -1,3 +1,3 @@
 export class Restaurant {
-  name: string;
+  name: string
 }
