@@ -22,8 +22,3 @@ main: {
   flex: 1;
   display: flex;
 }
-
-.toast {
-  position: fixed;
-  bottom: 0;
-}

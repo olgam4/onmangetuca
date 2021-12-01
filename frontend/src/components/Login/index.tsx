@@ -24,7 +24,7 @@ const Login = () => {
   }
 
   const loginError = () => toast.error('Woops...', {
-    position: "bottom-center",
+    position: "top-center",
     autoClose: 5000,
     hideProgressBar: false,
     closeOnClick: true,
@@ -35,7 +35,7 @@ const Login = () => {
 
   const loginSuccess = () => {
     toast.success('Success!', {
-      position: "bottom-center",
+      position: "top-center",
       autoClose: 5000,
       hideProgressBar: false,
       closeOnClick: true,

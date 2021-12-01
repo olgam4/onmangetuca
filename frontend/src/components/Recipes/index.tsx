@@ -21,7 +21,7 @@ const Recipes = () => {
   }
 
   const addError = () => toast.error('Woops...', {
-    position: "bottom-center",
+    position: "top-center",
     autoClose: 5000,
     hideProgressBar: false,
     closeOnClick: true,

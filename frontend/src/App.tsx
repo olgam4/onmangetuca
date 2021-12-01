@@ -1,4 +1,5 @@
-import { Link, Outlet } from 'react-router-dom'
+import { useEffect } from 'react'
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 
 import useAuth from 'hooks/useAuth'
@@ -9,6 +10,16 @@ import Logout from 'components/Logout'
 
 function App() {
   const { authed } = useAuth()
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  useEffect(() => {
+    if (location.pathname === '/') {
+      navigate('/recipes')
+    }
+  }, [navigate, location])
+
+
   return (
     <div className="App">
       <div className="content">
@@ -19,20 +30,8 @@ function App() {
           <Logout/>
           <Link to="/recipes">Recipes</Link>
         </nav>
-        )}
-      <div className="toast">
-        <ToastContainer
-          position="bottom-center"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-        />
-      </div>
+      )}
+      <ToastContainer />
     </div>
   );
 }
