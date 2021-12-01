@@ -1,3 +1,5 @@
+import { BiLogOut } from 'react-icons/bi'
+
 import useAuth from 'hooks/useAuth'
 import useUser from 'hooks/useUser'
 
@@ -11,9 +13,9 @@ const Logout = () => {
   }
 
   return (
-    <button type="button" onClick={handleLogout}>
-      Logout
-    </button>
+    <div style={{ flex: 0 }} className="navIcon" onClick={handleLogout}>
+      <BiLogOut size="30px" color="red" />
+    </div>
   )
 }
 

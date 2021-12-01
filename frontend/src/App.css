@@ -6,6 +6,20 @@
 
 .App nav {
   height: 60px;
+  display: flex;
+  justify-content: space-around;
+}
+
+nav > * {
+  width: 50px;
+  display: flex;
+}
+
+.App .navIcon {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .App > .content {
