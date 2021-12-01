@@ -29,6 +29,7 @@ function App() {
         <nav>
           <Logout/>
           <Link to="/recipes">Recipes</Link>
+          <Link to="/swipe">Swipe</Link>
         </nav>
       )}
       <ToastContainer />

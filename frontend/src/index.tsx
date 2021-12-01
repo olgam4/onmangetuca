@@ -5,10 +5,12 @@ import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 
-import { UserProvider } from 'hooks/useUser'
 import Login from 'routes/login'
 import Recipes from 'routes/recipes'
+import Swipe from 'routes/swipe'
 import RequireAuth from 'components/RequireAuth'
+
+import { UserProvider } from 'hooks/useUser'
 import { AuthProvider } from 'hooks/useAuth'
 
 ReactDOM.render(
@@ -24,6 +26,7 @@ ReactDOM.render(
                   </RequireAuth>
                 } />
               <Route path="login" element={<Login />} />
+              <Route path="swipe" element={<Swipe />} />
             </Route>
           </Routes>
         </UserProvider>

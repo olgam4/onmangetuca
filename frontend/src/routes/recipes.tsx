@@ -1,6 +1,5 @@
 import Recipes from "components/Recipes"
 
-
 const RecipesRouterElement = () => {
   return (
     <main>
