@@ -1,9 +1,12 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import instance from '../api/axios'
 
-interface Recipe {
+type Recipe = {
   name: string
+  description: string
 }
+
+type Callback = () => void
 
 const useRecipesApi = () => {
   const baseRecipes: Recipe[] = []
@@ -16,12 +19,15 @@ const useRecipesApi = () => {
       })
   }, [setRecipes])
 
-  const addRecipe = (recipe: Recipe) => {
+  const addRecipe = useCallback((recipe: Recipe, cb: Callback) => {
     instance.post(`/recipes`, recipe)
       .then(() => {
         setRecipes([...recipes, recipe])
       })
-  }
+      .catch(() => {
+        cb()
+      })
+  }, [recipes])
 
   return {
     recipes: recipes as Recipe[],

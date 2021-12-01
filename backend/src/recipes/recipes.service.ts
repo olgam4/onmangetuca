@@ -6,11 +6,11 @@ import { Recipe } from './recipe.entity'
 import { RecipeRepository } from './recipe.repository'
 
 const fromDto = (createRecipeDto: CreateRecipeDto) => {
-  return new Recipe(createRecipeDto.name)
+  return new Recipe(createRecipeDto.name, createRecipeDto.description)
 }
 
 const toDto = (recipe: Recipe) => {
-  return new RecipeDto(recipe.name)
+  return new RecipeDto(recipe.name, recipe.description)
 }
 
 @Injectable()

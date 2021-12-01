@@ -1,9 +1,12 @@
-import useLogin from "hooks/useLogin"
 import { useState } from "react"
 import { toast } from "react-toastify"
 
+import useUser from "hooks/useUser"
+
+import style from "./style.module.css"
+
 const Login = () => {
-  const { login } = useLogin()
+  const { logout, login } = useUser()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
@@ -25,18 +28,34 @@ const Login = () => {
     progress: undefined,
   })
 
-  const handleClick = () => {
-    const user = {
+  const loginSuccess = () => {
+    toast.success('Success!', {
+      position: "bottom-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    })
+    setPassword('')
+    setUsername('')
+  }
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const userPayload = {
       user: {
         username,
         password
       }
     }
-    login(user, loginError)
+
+    login(userPayload, loginSuccess, loginError)
   }
 
   return (
-    <div>
+    <form onSubmit={handleSubmit} className={style.loginForm} >
       <h1>Login</h1>
       <label>
         Username:
@@ -48,8 +67,8 @@ const Login = () => {
         <input type="password" value={password} onChange={handleChangePassword} />
       </label>
       <br />
-      <button onClick={handleClick}>Login</button>
-    </div>
+      <button type="submit" >Login</button>
+    </form>
   )
 
 }

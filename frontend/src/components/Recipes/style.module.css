@@ -1,0 +1,65 @@
+.recipes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  margin: 0;
+  background-color: #fafafa;
+}
+
+.recipes form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  margin: 0;
+  background-color: #fafafa;
+}
+
+.recipes label {
+  width: 100%;
+  height: 100%;
+  background-color: #fafafa;
+}
+
+.recipes input {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  background-color: #fafafa;
+  font-size: 1.5rem;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  color: #000;
+}
+
+.recipes textarea {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  background-color: #fafafa;
+  font-size: 1.5rem;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  color: #000;
+}
+
+.recipes button {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  background-color: #fafafa;
+  font-size: 1.5rem;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  color: #000;
+}
