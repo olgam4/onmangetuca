@@ -1,13 +1,57 @@
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import Card from 'react-tinder-card'
+import { toast } from 'react-toastify'
+import { Manager } from 'socket.io-client'
+
 import { useSession } from './hooks'
 
 import style from './style.module.css'
+
+const url = process.env.REACT_APP_API_URL
+
+const manager = new Manager(url, {
+  path: '/session',
+})
+const newSocket = manager.socket('/')
+
+const setup = (restaurants: any, cb: any) => {
+  newSocket.removeListener('msgToClient')
+  newSocket.on('msgToClient', ({ event, data }) => {
+    console.log(event)
+    if (event === 'match') {
+      // @ts-ignore
+      const matched = restaurants.find((r) => r.id === parseInt(data.restaurantId, 10))
+      if (matched) {
+        cb(`${matched!.name} pleases everyone :D`)
+      }
+    }
+  })
+}
 
 const Swipe = () => {
   const { swipe, restaurants } = useSession()
 
   const ref = useRef(null)
+
+  const matchNotification = (message: string) => toast.success(message, {
+    position: "top-center",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  })
+
+  useEffect(() => {
+    setup(restaurants, matchNotification)
+  }, [restaurants])
+
+  const ping = () => {
+    if (newSocket) {
+      newSocket.emit('msgToServer', 'ping')
+    }
+  }
 
   const yes = () => {
     // @ts-ignore
@@ -19,11 +63,11 @@ const Swipe = () => {
     ref.current?.swipe('left')
   }
 
-  const onSwipe = (direction: string) => {
+  const onSwipe = (direction: string, index: number) => {
     if (direction === 'right') {
-      swipe(restaurants[0], true)
+      swipe(restaurants[index], true)
     } else {
-      swipe(restaurants[1], false)
+      swipe(restaurants[index], false)
     }
   }
 
@@ -35,7 +79,7 @@ const Swipe = () => {
             ref={ref}
             className="swipe"
             preventSwipe={['up', 'down']}
-            onSwipe={onSwipe}
+            onSwipe={(direction) => onSwipe(direction, index)}
             key={index}
           >
             <div className={style.card}>
@@ -47,6 +91,7 @@ const Swipe = () => {
       <div>
         <button disabled onClick={no}>No</button>
         <button disabled onClick={yes}>Yes</button>
+        <button onClick={ping}>Ping</button>
       </div>
     </div>
   )

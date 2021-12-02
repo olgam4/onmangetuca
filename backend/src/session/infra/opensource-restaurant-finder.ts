@@ -22,6 +22,7 @@ export class OpenSourceRestaurantFinder implements RestaurantFinder {
       .then((result) => {
         return result.map((restaurantDto) => ({
           name: restaurantDto.display_name,
+          id: restaurantDto.place_id,
         }))
       })
   }

@@ -3,6 +3,7 @@ import api from '../../api/axios'
 
 type Restaurant = {
   name: string
+  id: string
 }
 
 export const useSession = () => {
@@ -17,11 +18,12 @@ export const useSession = () => {
 
   const swipe = useCallback((restaurant: Restaurant, like: boolean) => {
     if (like) {
-      api.post('swipe/like', { restaurant })
+      console.log('like', restaurant.id)
+      api.post(`swipe/like/${restaurant.id}`)
     } else {
-      api.post('swipe/dislike', { restaurant })
+      api.post('swipe/dislike')
     }
-  }, [setRestaurants])
+  }, [])
 
   return {
     restaurants,

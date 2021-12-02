@@ -23,5 +23,6 @@ import * as Nominatim from 'nominatim-client'
       },
     },
   ],
+  exports: [SessionService]
 })
 export class SessionModule {}

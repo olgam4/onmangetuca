@@ -6,12 +6,20 @@ import { RecipesModule } from './recipes/recipes.module'
 import { AuthModule } from './auth/auth.module'
 import { UserModule } from './user/user.module'
 import { SessionModule } from './session/session.module'
-import { RestaurantService } from './restaurant/restaurant.service'
 import { SwipeModule } from './swipe/swipe.module'
+import { SessionGateway } from './session.gateway'
+import { EventEmitterModule } from '@nestjs/event-emitter'
 
 @Module({
-  imports: [RecipesModule, AuthModule, UserModule, SessionModule, SwipeModule],
+  imports: [
+    RecipesModule,
+    AuthModule,
+    UserModule,
+    SessionModule,
+    SwipeModule,
+    EventEmitterModule.forRoot()
+  ],
   controllers: [AppController, HeartbeatController],
-  providers: [AppService, RestaurantService],
+  providers: [AppService, SessionGateway],
 })
 export class AppModule {}

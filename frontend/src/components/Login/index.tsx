@@ -12,8 +12,8 @@ const Login = () => {
   const { state } = useLocation()
   const { login: loginAuth } = useAuth()
   const navigate = useNavigate()
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const [username, setUsername] = useState('a')
+  const [password, setPassword] = useState('a')
 
   const handleChangePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value)
@@ -34,20 +34,20 @@ const Login = () => {
   })
 
   const loginSuccess = () => {
-    toast.success('Success!', {
-      position: "top-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    })
+    // toast.success('Success!', {
+    //   position: "top-center",
+    //   autoClose: 5000,
+    //   hideProgressBar: false,
+    //   closeOnClick: true,
+    //   pauseOnHover: true,
+    //   draggable: true,
+    //   progress: undefined,
+    // })
     setPassword('')
     setUsername('')
     loginAuth().then(
       () => {
-        navigate(state.from || '/recipes')
+        state && navigate(state.from || '/recipes')
       }
     )
   }
