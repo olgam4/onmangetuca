@@ -9,11 +9,11 @@ import style from "./style.module.css"
 
 const Login = () => {
   const { login } = useUser()
-  const { state } = useLocation()
   const { login: loginAuth } = useAuth()
-  const navigate = useNavigate()
   const [username, setUsername] = useState('a')
   const [password, setPassword] = useState('a')
+  const location = useLocation()
+  const navigate = useNavigate()
 
   const handleChangePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value)
@@ -34,22 +34,12 @@ const Login = () => {
   })
 
   const loginSuccess = () => {
-    // toast.success('Success!', {
-    //   position: "top-center",
-    //   autoClose: 5000,
-    //   hideProgressBar: false,
-    //   closeOnClick: true,
-    //   pauseOnHover: true,
-    //   draggable: true,
-    //   progress: undefined,
-    // })
     setPassword('')
     setUsername('')
-    loginAuth().then(
-      () => {
-        state && navigate(state.from || '/recipes')
-      }
-    )
+    const from = location.state?.from === '/login' ? '/' : location.state?.from || '/'
+
+    loginAuth()
+    navigate(from)
   }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -80,7 +70,6 @@ const Login = () => {
       <button type="submit" >Login</button>
     </form>
   )
-
 }
 
 export default Login

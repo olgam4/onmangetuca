@@ -3,7 +3,9 @@ import api from '../../api/axios'
 
 type Restaurant = {
   name: string
-  id: string
+  id: number
+  photo: string
+  address: string
 }
 
 export const useSession = () => {
@@ -12,13 +14,13 @@ export const useSession = () => {
   useEffect(() => {
     api.post('session')
       .then((response) => {
-      setRestaurants(response.data)
-    })
+        console.log(response.data)
+        setRestaurants(response.data)
+      })
   }, [setRestaurants])
 
   const swipe = useCallback((restaurant: Restaurant, like: boolean) => {
     if (like) {
-      console.log('like', restaurant.id)
       api.post(`swipe/like/${restaurant.id}`)
     } else {
       api.post('swipe/dislike')

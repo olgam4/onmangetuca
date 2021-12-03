@@ -3,8 +3,8 @@ import { setupContext, Provider } from "./base"
 
 type State = {
   authed: boolean
-  login: () => Promise<void>
-  logout: () => Promise<void>
+  login: () => void
+  logout: () => void
 }
 
 type Action = {
@@ -15,8 +15,8 @@ const AuthContext = setupContext<State, Action>()
 
 const defaultState: State = {
   authed: false,
-  login: () => Promise.resolve(),
-  logout: () => Promise.resolve()
+  login: () => ({}),
+  logout: () => ({}),
 }
 
 const reducer = (state: State, action: Action): State => {
@@ -46,20 +46,18 @@ const useAuth = () => {
     }
   }, [context])
 
+  const login = useCallback(() => {
+    setAuthed(true)
+  }, [setAuthed])
+
+  const logout = useCallback(() => {
+    setAuthed(false)
+  }, [setAuthed])
+
   return {
     authed: context.state.authed,
-    login() {
-      return new Promise<void>((res) => {
-        setAuthed(true)
-        res()
-      })
-    },
-    logout() {
-      return new Promise<void>((res) => {
-        setAuthed(false)
-        res()
-      })
-    }
+    login,
+    logout
   }
 }
 

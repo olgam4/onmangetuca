@@ -17,7 +17,6 @@ const newSocket = manager.socket('/')
 const setup = (restaurants: any, cb: any) => {
   newSocket.removeListener('msgToClient')
   newSocket.on('msgToClient', ({ event, data }) => {
-    console.log(event)
     if (event === 'match') {
       // @ts-ignore
       const matched = restaurants.find((r) => r.id === parseInt(data.restaurantId, 10))
@@ -71,6 +70,12 @@ const Swipe = () => {
     }
   }
 
+  const both = (photo: string) => {
+    const linearGradient = `linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0) 25%)`
+    const backgroundImage = `url(${photo})`
+    return `${linearGradient}, ${backgroundImage}`
+  }
+
   return (
     <div className={style.session}>
       <div className={style.cardContainer}>
@@ -82,7 +87,10 @@ const Swipe = () => {
             onSwipe={(direction) => onSwipe(direction, index)}
             key={index}
           >
-            <div className={style.card}>
+            <div 
+              className={style.card}
+              style={{ backgroundImage: both(restaurant.photo) }}
+            >
               <h3>{restaurant.name}</h3>
             </div>
           </Card>

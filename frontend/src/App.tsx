@@ -1,48 +1,36 @@
-import { useEffect } from 'react'
-import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { useLocation, useNavigate, useOutlet } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
-import { MdFastfood } from 'react-icons/md'
-import { BiFoodMenu } from 'react-icons/bi'
-
-import Logout from 'components/Logout'
 
 import useAuth from 'hooks/useAuth'
 
 import 'react-toastify/dist/ReactToastify.css'
 import './App.css'
 
+const AnimatedOutlet = () => {
+  const thing = useOutlet()
+  const [frozenThing] = useState(thing)
+  return frozenThing
+}
+
 function App() {
   const { authed } = useAuth()
   const navigate = useNavigate()
-  const location = useLocation()
+  const { pathname } = useLocation()
 
   useEffect(() => {
-    if (location.pathname === '/') {
+    if (!authed && pathname === '/') {
+      navigate('/login')
+    } else if (authed && pathname === '/') {
       navigate('/recipes')
     }
-  }, [navigate, location])
-
+  }, [authed, pathname, navigate])
 
   return (
     <div className="App">
       <div className="content">
-        <Outlet />
+        <AnimatedOutlet />
       </div>
-      {authed && (
-        <nav>
-          <Logout/>
-          <Link to="/recipes">
-            <div className="navIcon">
-              <BiFoodMenu size="30px" />
-            </div>
-          </Link>
-          <Link to="/swipe">
-            <div className="navIcon">
-              <MdFastfood size="30px"/>
-            </div>
-          </Link>
-        </nav>
-      )}
       <ToastContainer />
     </div>
   );

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { toast } from 'react-toastify'
+import { GoPlus } from 'react-icons/go'
 
 import Recipe from 'components/Recipe'
 
@@ -30,7 +31,7 @@ const Recipes = () => {
     progress: undefined,
   })
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<any>) => {
     e.preventDefault()
     if (name.length === 0) {
       addError()
@@ -49,25 +50,29 @@ const Recipes = () => {
 
   return (
     <div className={style.recipes}>
-      {recipes.map((recipe, i) => (
-        <>
-          <Recipe key={i} name={recipe.name} description={recipe.description} />
-          <br/>
-        </>
-      ))}
       <form onSubmit={handleSubmit}>
         <label>
-          Name:
+          Name
           <input value={name} onChange={handleNameChange} />
         </label>
         <br />
         <label>
-          Description:
+          Description
           <textarea value={description} onChange={handleDescriptionChange} />
         </label>
         <br />
-        <button type="submit">Add</button>
       </form>
+      <div className={style.button} onClick={handleSubmit}>
+        <GoPlus size="30px"/>
+      </div>
+      <div className={style.recipesContainer}>
+        {recipes.map((recipe, i) => (
+          <>
+            <Recipe key={i} name={recipe.name} description={recipe.description} />
+            <br/>
+          </>
+        ))}
+      </div>
     </div>
   )
 }

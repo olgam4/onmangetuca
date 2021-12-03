@@ -5,7 +5,10 @@ import { RestaurantFinder } from '../domain/restaurant-finder'
 
 @Injectable()
 export class OpenSourceRestaurantFinder implements RestaurantFinder {
-  constructor(@Inject('Nominatim') private readonly nominatimClient) {}
+  constructor(
+    @Inject('Pexels') private readonly pexelsClient: any,
+    @Inject('Nominatim') private readonly nominatimClient: any
+  ) {}
 
   find(): Promise<Restaurant[]> {
     const lat = 46.8010757
@@ -13,17 +16,35 @@ export class OpenSourceRestaurantFinder implements RestaurantFinder {
     return this.getRestaurants(lat, lng)
   }
 
-  private getRestaurants(lat: number, lng: number): Promise<Restaurant[]> {
-    return this.nominatimClient
+  private async getRestaurants(lat: number, lng: number): Promise<any> {
+    const nomResult = await this.nominatimClient
       .search({
         q: `${lat} ${lng} restaurant`,
         addressdetails: 1,
       })
-      .then((result) => {
-        return result.map((restaurantDto) => ({
-          name: restaurantDto.display_name,
-          id: restaurantDto.place_id,
-        }))
+    const restaurants = nomResult.map((result) => {
+      return new Restaurant(
+        result.place_id,
+        result.address.amenity,
+        `${result.address.road}`
+      )
+    })
+    const photosPromises = restaurants.map(async (r) => {
+      return new Promise(async (resolve) => {
+        const result = await this.pexelsClient.photos.search({
+          query: r.name,
+          page: 1,
+          per_page: 1,
+        })
+        resolve({
+          photo: result.photos[0]?.src.original,
+          id: r.id,
+          name: r.name,
+          address: r.address,
+        })
       })
+    })
+    const restaurantsWithPhotos = await Promise.all(photosPromises)
+    return restaurantsWithPhotos
   }
 }

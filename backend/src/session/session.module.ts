@@ -4,6 +4,7 @@ import { SessionController } from './session.controller'
 import { SessionService } from './session.service'
 
 import * as Nominatim from 'nominatim-client'
+import * as Pexels from 'pexels'
 
 @Module({
   controllers: [SessionController],
@@ -12,6 +13,14 @@ import * as Nominatim from 'nominatim-client'
     {
       provide: 'RestaurantFinder',
       useClass: OpenSourceRestaurantFinder,
+    },
+    {
+      provide: 'Pexels',
+      useFactory: () => {
+        return Pexels.createClient(
+          process.env.PEXELS_API,
+        )
+      },
     },
     {
       provide: 'Nominatim',

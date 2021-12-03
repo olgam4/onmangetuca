@@ -1,6 +1,6 @@
-import { ReactElement } from 'react'
+import { ReactElement, useEffect } from 'react'
 
-import { useLocation, Navigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import useAuth from 'hooks/useAuth'
 
@@ -11,14 +11,17 @@ type Props = {
 const RequireAuth = ({ children }: Props) => {
   const { authed } = useAuth()
   const location = useLocation()
+  const navigate = useNavigate()
 
-  return authed === true ?
+  useEffect(() => {
+    if (!authed && location.pathname !== '/login') {
+      navigate('/login', { state: { from: location.pathname } })
+    }
+  }, [authed, location, navigate])
+
+  return authed ?
     <>{children}</> :
-    <Navigate
-      to="/login"
-      replace
-      state={{ from: location.pathname }}
-    />
+    null
 }
 
 export default RequireAuth

@@ -23,7 +23,8 @@ export class SessionService {
   async create(user: User): Promise<Restaurant[]> {
     console.log(`${user.username} created a session with id ${this.id}`)
     this.session.join(user.username)
-    return this.restaurantFinder.find()
+    const restaurants = await this.restaurantFinder.find()
+    return restaurants
   }
 
   async join(user: User, id: string): Promise<Restaurant[]> {

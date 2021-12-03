@@ -5,9 +5,67 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  z-index: 0;
+  font-family: 'Fjalla One', sans-serif;
+  background-color: #CC2E1E;
+}
+
+* {
+  font-family: 'Roboto', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Fjalla One', sans-serif;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+nav .navIcon {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+nav {
+  position: absolute;
+  height: 60px;
+  width: 100vw;
+  bottom: 0;
+  display: flex;
+  justify-content: space-around;
+}
+
+nav > * {
+  width: 50px;
+  display: flex;
+}
+
+.fade-enter {
+  opacity: 0;
+  transform: translate(-60px, 0);
+}
+
+.fade-enter.fade-enter-active {
+  opacity: 1;
+  transform: translate(0px, 0);
+
+  transition: opacity 300ms, transform 300ms ;
+}
+
+.fade-exit {
+  transform: translate(0, calc(-100vh + 60px));
+  opacity: 1;
+  z-index: 1;
+}
+
+.fade-exit.fade-exit-active {
+  opacity: 0;
+  transform: translate(60px, calc(-100vh + 60px));
+
+  transition: opacity 300ms, transform 300ms;
 }
