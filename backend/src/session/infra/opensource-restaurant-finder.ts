@@ -32,12 +32,13 @@ export class OpenSourceRestaurantFinder implements RestaurantFinder {
     const photosPromises = restaurants.map(async (r) => {
       return new Promise(async (resolve) => {
         const result = await this.pexelsClient.photos.search({
-          query: r.name,
+          query: `${r.name}, restaurant`,
+          local: 'fr-FR',
           page: 1,
           per_page: 1,
         })
         resolve({
-          photo: result.photos[0]?.src.original,
+          photo: result.photos[0]?.src.portrait,
           id: r.id,
           name: r.name,
           address: r.address,

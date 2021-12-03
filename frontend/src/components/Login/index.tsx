@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useLocation, useNavigate } from 'react-router-dom'
 import { toast } from "react-toastify"
+import { BsArrowRightCircle } from "react-icons/bs"
 
 import useUser from "hooks/useUser"
 import useAuth from "hooks/useAuth"
@@ -10,8 +11,8 @@ import style from "./style.module.css"
 const Login = () => {
   const { login } = useUser()
   const { login: loginAuth } = useAuth()
-  const [username, setUsername] = useState('a')
-  const [password, setPassword] = useState('a')
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
   const location = useLocation()
   const navigate = useNavigate()
 
@@ -67,7 +68,7 @@ const Login = () => {
         <input type="password" value={password} onChange={handleChangePassword} />
       </label>
       <br />
-      <button type="submit" >Login</button>
+      <button type="submit" ><BsArrowRightCircle size="40px" color="white" /></button>
     </form>
   )
 }

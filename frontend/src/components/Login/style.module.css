@@ -32,11 +32,11 @@
   width: 90px;
   height: 30px;
   border-radius: 5px;
-  border: 1px solid #ccc;
   color: #000;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  align-self: flex-end;
+  margin-right: 60px;
 }
 
 .loginForm button:hover {

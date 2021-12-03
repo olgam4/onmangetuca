@@ -71,7 +71,7 @@ const Swipe = () => {
   }
 
   const both = (photo: string) => {
-    const linearGradient = `linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0) 25%)`
+    const linearGradient = `linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0) 18%)`
     const backgroundImage = `url(${photo})`
     return `${linearGradient}, ${backgroundImage}`
   }
