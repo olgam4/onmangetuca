@@ -91,7 +91,7 @@ const Swipe = () => {
     (
       <div className={style.session}>
         <div className={style.cardContainer}>
-          {restaurants.map((restaurant, index) => (
+          {[restaurants[0]].map((restaurant, index) => (
             <Card
               ref={ref}
               className="swipe"
