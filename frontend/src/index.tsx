@@ -8,13 +8,16 @@ import './index.css'
 
 import { UserProvider } from 'hooks/useUser'
 import { AuthProvider } from 'hooks/useAuth'
+import { SessionProvider } from 'hooks/useSession'
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthProvider>
         <UserProvider>
-          <Routes />
+          <SessionProvider>
+            <Routes />
+          </SessionProvider>
         </UserProvider>
       </AuthProvider>
     </BrowserRouter>

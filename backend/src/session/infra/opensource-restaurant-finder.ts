@@ -7,26 +7,23 @@ import { RestaurantFinder } from '../domain/restaurant-finder'
 export class OpenSourceRestaurantFinder implements RestaurantFinder {
   constructor(
     @Inject('Pexels') private readonly pexelsClient: any,
-    @Inject('Nominatim') private readonly nominatimClient: any
+    @Inject('Nominatim') private readonly nominatimClient: any,
   ) {}
 
-  find(): Promise<Restaurant[]> {
-    const lat = 46.8010757
-    const lng = -71.2453933
+  find(lat: number, lng: number): Promise<Restaurant[]> {
     return this.getRestaurants(lat, lng)
   }
 
   private async getRestaurants(lat: number, lng: number): Promise<any> {
-    const nomResult = await this.nominatimClient
-      .search({
-        q: `${lat} ${lng} restaurant`,
-        addressdetails: 1,
-      })
+    const nomResult = await this.nominatimClient.search({
+      q: `${lat} ${lng} restaurant`,
+      addressdetails: 1,
+    })
     const restaurants = nomResult.map((result) => {
       return new Restaurant(
         result.place_id,
         result.address.amenity,
-        `${result.address.road}`
+        `${result.address.road}`,
       )
     })
     const photosPromises = restaurants.map(async (r) => {

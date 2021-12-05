@@ -1,4 +1,10 @@
-import { Controller, HttpCode, Request, Post, UseGuards, Param } from '@nestjs/common'
+import {
+  Controller,
+  HttpCode,
+  Post,
+  UseGuards,
+  Param,
+} from '@nestjs/common'
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard'
 import { SwipeService } from './swipe.service'
 
@@ -8,10 +14,12 @@ export class SwipeController {
 
   @UseGuards(JwtAuthGuard)
   @HttpCode(200)
-  @Post('like/:restaurant')
-  like(@Param('restaurant') restaurant: string, @Request() req: any) {
-    console.log('swipe request')
-    return this.swipeService.like(req.user, restaurant)
+  @Post('like/:session/:restaurant')
+  like(
+    @Param('restaurant') restaurant: string,
+    @Param('session') session: string,
+  ) {
+    return this.swipeService.like(session, restaurant)
   }
 
   @UseGuards(JwtAuthGuard)

@@ -1,39 +1,22 @@
+import { Restaurant } from './restaurant'
+
 export class Session {
   id: string
-  likes: Map<string, string[]>
+  restaurants: Restaurant[]
+  likes: Map<string, number>
 
   constructor() {
-    this.id = 'string'
+    this.id = Math.random().toString(36).substring(2, 7)
     this.likes = new Map()
   }
 
-  addLike(username: string, restaurant: string, callback: () => void) {
-    this.verifyIfMatch(restaurant, callback)
-    if (!this.likes.has(username)) {
-      this.likes.set(username, [restaurant])
+  addLike(restaurant: string, callback: () => void) {
+    if (this.likes.has(restaurant)) {
+      callback()
+      const numbersOfLike = this.likes.get(restaurant)
+      this.likes.set(restaurant, numbersOfLike + 1)
     } else {
-      this.likes.get(username).push(restaurant)
+      this.likes.set(restaurant, 1)
     }
-  }
-
-  join(username: string) {
-    if (!this.likes.has(username)) {
-      this.likes.set(username, [])
-      console.log(`${username} joined the session`)
-    }
-  }
-
-  private verifyIfMatch(restaurant: string, callback: () => void) {
-    const likes = this.likes.values()
-    const likesFlat = [].concat(...likes)
-    console.log(restaurant)
-    console.log(likesFlat)
-    likesFlat.forEach(likedRestaurant => {
-      if (likedRestaurant === restaurant) {
-        callback()
-        console.log('MATCH FOUND FOR', restaurant)
-        return
-      }
-    })
   }
 }

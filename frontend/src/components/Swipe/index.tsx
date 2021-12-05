@@ -1,56 +1,67 @@
-import { useEffect, useRef } from 'react'
+import { useRef, useState } from 'react'
+import { BsArrowRight, BsArrowRightCircle } from 'react-icons/bs'
 import Card from 'react-tinder-card'
 import { toast } from 'react-toastify'
-import { Manager } from 'socket.io-client'
 
-import { useSession } from './hooks'
+import useSession from '../../hooks/useSession'
 
 import style from './style.module.css'
 
-const url = process.env.REACT_APP_API_URL
+const CreateSession = () => {
+  const { createSession } = useSession()
+  
+  return (
+    <div className={style.create}>
+      <button
+        onClick={createSession}
+      >
+        Create
+        <div />
+        <BsArrowRight />
+      </button>
+    </div>
+  )
+}
 
-const manager = new Manager(url, {
-  path: '/session',
-})
-const newSocket = manager.socket('/')
+const JoinSesion = () => {
+  const { joinSession } = useSession()
+  const [code, setCode] = useState('')
 
-const setup = (restaurants: any, cb: any) => {
-  newSocket.removeListener('msgToClient')
-  newSocket.on('msgToClient', ({ event, data }) => {
-    if (event === 'match') {
-      // @ts-ignore
-      const matched = restaurants.find((r) => r.id === parseInt(data.restaurantId, 10))
-      if (matched) {
-        cb(`${matched!.name} pleases everyone :D`)
-      }
+  const handleChange = (e: any) => {
+    setCode(e.target.value)
+  }
+  
+  const handleJoining = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (code.length === 0) {
+      toast.error('Please enter a code')
+      return
     }
-  })
+    joinSession(code)
+  }
+
+  return (
+    <div className={style.join}>
+      <form onSubmit={handleJoining}>
+        <label>
+          Code
+          <input
+            className={style.joinSessionInput}
+            type="text"
+            value={code}
+            onChange={handleChange}
+          />
+        </label>
+        <button type="submit" ><BsArrowRightCircle size="40px" color="white" /></button>
+      </form>
+    </div>
+  )
 }
 
 const Swipe = () => {
-  const { swipe, restaurants } = useSession()
+  const { connected, restaurants, sessionId, swipe } = useSession()
 
   const ref = useRef(null)
-
-  const matchNotification = (message: string) => toast.success(message, {
-    position: "top-center",
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-  })
-
-  useEffect(() => {
-    setup(restaurants, matchNotification)
-  }, [restaurants])
-
-  const ping = () => {
-    if (newSocket) {
-      newSocket.emit('msgToServer', 'ping')
-    }
-  }
 
   const yes = () => {
     // @ts-ignore
@@ -76,33 +87,38 @@ const Swipe = () => {
     return `${linearGradient}, ${backgroundImage}`
   }
 
-  return (
-    <div className={style.session}>
-      <div className={style.cardContainer}>
-        {restaurants.map((restaurant, index) => (
-          <Card
-            ref={ref}
-            className="swipe"
-            preventSwipe={['up', 'down']}
-            onSwipe={(direction) => onSwipe(direction, index)}
-            key={index}
-          >
-            <div 
-              className={style.card}
-              style={{ backgroundImage: both(restaurant.photo) }}
+  return connected ?
+    (
+      <div className={style.session}>
+        <div className={style.cardContainer}>
+          {restaurants.map((restaurant, index) => (
+            <Card
+              ref={ref}
+              className="swipe"
+              preventSwipe={['up', 'down']}
+              onSwipe={(direction) => onSwipe(direction, index)}
+              key={index}
             >
-              <h3>{restaurant.name}</h3>
-            </div>
-          </Card>
-        ))}
+              <div 
+                className={style.card}
+                style={{ backgroundImage: both(restaurant.photo) }}
+              >
+                <h3>{restaurant.name}</h3>
+              </div>
+            </Card>
+          ))}
+        </div>
+        <div className={style.info}>
+          <div>{sessionId}</div>
+        </div>
       </div>
-      <div>
-        <button disabled onClick={no}>No</button>
-        <button disabled onClick={yes}>Yes</button>
-        <button onClick={ping}>Ping</button>
+    ) :
+    (
+      <div className={style.sessions}>
+        <CreateSession />
+        <JoinSesion />
       </div>
-    </div>
-  )
+    )
 }
 
 export default Swipe

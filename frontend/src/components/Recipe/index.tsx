@@ -7,10 +7,13 @@ type Props = {
 
 const Recipes = ({ name, description }: Props) => {
   return (
-    <div className={style.recipe}>
-      <h1>{name}</h1>
-      <p>{description}</p>
-    </div>
+    <>
+      <div className={style.recipe}>
+        <h1>{name}</h1>
+        <p>{description}</p>
+      </div>
+      <br />
+    </>
   )
 }
 

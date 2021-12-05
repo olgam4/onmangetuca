@@ -4,42 +4,55 @@ import { User } from 'src/user/user.entity'
 import { Restaurant } from './domain/restaurant'
 import { RestaurantFinder } from './domain/restaurant-finder'
 import { Session } from './domain/session.entity'
+import { SessionRepository } from './domain/session.repository'
+
+type ReturnType = {
+  restaurants: Restaurant[]
+  id: string
+}
 
 @Injectable()
 export class SessionService {
-  private session: Session
-  private id: string
-
   constructor(
     @Inject('RestaurantFinder')
     private readonly restaurantFinder: RestaurantFinder,
-    private readonly eventEmitter: EventEmitter2
-  ) {
-    console.log('creating a new session service')
-    this.session = new Session()
-    this.id = Math.random().toString()
+    @Inject('SessionRepository')
+    private readonly sessionRepository: SessionRepository,
+    private readonly eventEmitter: EventEmitter2,
+  ) {}
+
+  async create(user: User, lat: number, lng: number): Promise<ReturnType> {
+    const session = new Session()
+    console.log(`${user.username} created a session with id ${session.id}`)
+    session.restaurants = await this.restaurantFinder.find(lat, lng)
+    this.sessionRepository.save(session)
+    return {
+      id: session.id,
+      restaurants: session.restaurants,
+    }
   }
 
-  async create(user: User): Promise<Restaurant[]> {
-    console.log(`${user.username} created a session with id ${this.id}`)
-    this.session.join(user.username)
-    const restaurants = await this.restaurantFinder.find()
-    return restaurants
-  }
-
-  async join(user: User, id: string): Promise<Restaurant[]> {
+  async join(user: User, id: string): Promise<ReturnType> {
+    const session = await this.sessionRepository.findBySessionId(id)
     console.log(`${user.username} joined ${id}`)
-    this.session.join(user.username)
-    return
+    this.sessionRepository.save(session)
+    return {
+      id: session.id,
+      restaurants: session.restaurants,
+    }
   }
 
-  async like(user: User, restaurantId: string): Promise<Restaurant[]> {
-    console.log(`${user.username} liked ${restaurantId} in session ${this.id}`)
-    this.session.addLike(user.username, restaurantId, () => this.eventEmitter.emit('match', { restaurantId }))
-    return
+  async like(
+    sessionId: string,
+    restaurantId: string,
+  ) {
+    const session = await this.sessionRepository.findBySessionId(sessionId)
+    session.addLike(restaurantId, () =>
+      this.eventEmitter.emit('match', { restaurantId, sessionId }),
+    )
   }
 
-  async getSession(user: User): Promise<Session> {
-    return this.session
+  async getSession(id: string): Promise<Session> {
+    return this.sessionRepository.findBySessionId(id)
   }
 }

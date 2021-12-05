@@ -18,6 +18,7 @@ nav {
 
 nav.invisible {
   background-color: #CC2E1E;
+  box-shadow: none;
 }
 
 

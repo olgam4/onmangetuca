@@ -67,10 +67,7 @@ const Recipes = () => {
       </div>
       <div className={style.recipesContainer}>
         {recipes.map((recipe, i) => (
-          <>
-            <Recipe key={i} name={recipe.name} description={recipe.description} />
-            <br/>
-          </>
+          <Recipe key={i} name={recipe.name} description={recipe.description} />
         ))}
       </div>
     </div>

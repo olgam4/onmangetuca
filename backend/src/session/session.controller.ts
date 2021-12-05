@@ -1,4 +1,13 @@
-import { Controller, Get, Param, Post, Request, UseGuards } from '@nestjs/common'
+import {
+  Controller,
+  Get,
+  HttpCode,
+  Param,
+  Post,
+  Query,
+  Request,
+  UseGuards,
+} from '@nestjs/common'
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard'
 import { SessionService } from './session.service'
 
@@ -8,12 +17,13 @@ export class SessionController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  async create(@Request() req: any): Promise<any> {
-    return this.sessionService.create(req.user)
+  async create(@Request() req: any, @Query() query: any): Promise<any> {
+    return this.sessionService.create(req.user, query.lat, query.lng)
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post('join/:id')
+  @HttpCode(200)
+  @Post(':id/join')
   async join(@Param('id') id: string, @Request() req: any): Promise<any> {
     return this.sessionService.join(req.user, id)
   }
@@ -29,7 +39,7 @@ export class SessionController {
           name: key,
           likes: value,
         }
-      })
+      }),
     }
   }
 }

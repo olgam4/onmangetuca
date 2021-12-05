@@ -17,7 +17,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter'
     UserModule,
     SessionModule,
     SwipeModule,
-    EventEmitterModule.forRoot()
+    EventEmitterModule.forRoot(),
   ],
   controllers: [AppController, HeartbeatController],
   providers: [AppService, SessionGateway],
