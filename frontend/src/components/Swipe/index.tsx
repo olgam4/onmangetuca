@@ -25,7 +25,7 @@ const CreateSession = () => {
 
 const JoinSesion = () => {
   const { joinSession } = useSession()
-  const [code, setCode] = useState('a9ot8')
+  const [code, setCode] = useState('')
 
   const handleChange = (e: any) => {
     setCode(e.target.value)
