@@ -20,7 +20,7 @@ export class PlacesAPIRestaurantFinder implements RestaurantFinder {
       url:
         `/json?` +
         `location=${lat}%2C${lng}` +
-        `&radius=5000` +
+        `&radius=20000` +
         `&type=restaurant` +
         `&key=${process.env.PLACES_API}`,
     })
