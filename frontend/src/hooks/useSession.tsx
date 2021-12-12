@@ -17,6 +17,7 @@ type State = {
   restaurants: Restaurant[]
   sessionId: string
   connected: boolean
+  loading: boolean
 }
 
 type ActionRestaurants = {
@@ -34,7 +35,12 @@ type ActionConnection = {
   payload: boolean
 }
 
-type Action = ActionRestaurants | ActionSession | ActionConnection
+type ActionLoading = {
+  type: 'SET_LOADING'
+  payload: boolean
+}
+
+type Action = ActionRestaurants | ActionSession | ActionConnection | ActionLoading
 
 const SessionContext = setupContext<State, Action>()
 
@@ -42,6 +48,7 @@ const defaultState: State = {
   restaurants: [],
   sessionId: '',
   connected: false,
+  loading: false,
 }
 
 const reducer = (state: State, action: Action): State => {
@@ -60,6 +67,11 @@ const reducer = (state: State, action: Action): State => {
       return {
         ...state,
         connected: action.payload,
+      }
+      case 'SET_LOADING':
+      return {
+        ...state,
+        loading: action.payload,
       }
     default:
       return state
@@ -94,13 +106,13 @@ const setup = (
          return r.id === restaurantId
        })
       if (matched) {
-        cbMatch(`${matched!.name} pleases everyone :D`)
+        cbMatch(`🍭 ${matched.name} is a match!`)
       }
     })
   })
 }
 
-const matchNotification = (message: string) => toast.success(message, {
+const matchNotification = (message: string) => toast(message, {
   position: "top-center",
   autoClose: 5000,
   hideProgressBar: false,
@@ -133,7 +145,15 @@ const useSession = () => {
     })
   }, [dispatch])
 
+  const startLoading = useCallback(() => {
+    dispatch({
+      type: 'SET_LOADING',
+      payload: true,
+    })
+  }, [dispatch])
+
   const createSession = useCallback(() => {
+    startLoading()
     if(navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -150,17 +170,28 @@ const useSession = () => {
         }
       )
     }
-  }, [update])
+  }, [update, startLoading])
 
-  const joinSession = useCallback((id: string) => {
-    api.post(`session/${id}/join`)
+  const joinSession = useCallback(async (id: string) => {
+    startLoading()
+
+    const apiPromise = api.post(`session/${id}/join`)
       .then((response) => {
         return setup(response.data.id, response.data.restaurants, matchNotification)
-      }).then(({ sessionId, restaurants }) => {
-        update(sessionId, restaurants)
+      })
+
+    const delayPromise = new Promise<void>((resolve) => {
+      setTimeout(() => {
+        resolve()
+      }, 2000)
+    })
+
+    Promise.all([apiPromise, delayPromise])
+      .then((result) => {
+        update(result[0].sessionId, result[0].restaurants)
       }).catch(error => {
         toast.error('Wrong code')
-      })
+    })
   }, [update])
 
   const swipe = useCallback((restaurant: Restaurant, like: boolean) => {
@@ -178,6 +209,7 @@ const useSession = () => {
     sessionId: state.sessionId,
     restaurants: state.restaurants,
     connected: state.connected,
+    loading: state.loading,
   }
 }
 

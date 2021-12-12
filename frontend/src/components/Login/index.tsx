@@ -3,6 +3,8 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { toast } from "react-toastify"
 import { BsArrowRightCircle } from "react-icons/bs"
 
+import logo from "assets/onmangetuca.png"
+
 import useUser from "hooks/useUser"
 import useAuth from "hooks/useAuth"
 
@@ -57,7 +59,7 @@ const Login = () => {
 
   return (
     <form onSubmit={handleSubmit} className={style.loginForm} >
-      <h1>Login</h1>
+      <img src={logo} width="130px" alt="logo"/>
       <label>
         Username:
         <input type="text" value={username} onChange={handleChangeUsername} />

@@ -4,12 +4,12 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 60px;
 }
 
-.loginForm h1 {
-  font-size: 3.5rem;
+.loginForm img {
+  filter: invert(1) grayscale(1) brightness(5) opacity(0.9);
   margin-bottom: 1rem;
-  color: #fff;
 }
 
 .loginForm label {
@@ -36,7 +36,6 @@
   background-color: transparent;
   border: none;
   align-self: flex-end;
-  margin-right: 60px;
 }
 
 .loginForm button:hover {

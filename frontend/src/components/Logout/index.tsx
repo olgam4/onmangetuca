@@ -17,8 +17,10 @@ const Logout = () => {
   }, [logout, logoutAuth, navigate])
 
   return (
-    <div style={{ flex: 0 }} className="navIcon" onClick={handleLogout}>
-      <BiLogOut size="30px" color="red" />
+    <div style={{ width: "50px", display: "flex", justifyContent: "center", cursor: "pointer" }}>
+      <div style={{ flex: 0 }} className="navIcon" onClick={handleLogout}>
+        <BiLogOut size="30px" />
+      </div>
     </div>
   )
 }

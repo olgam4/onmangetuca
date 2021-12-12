@@ -22,7 +22,7 @@ function App() {
     if (!authed && pathname === '/') {
       navigate('/login')
     } else if (authed && pathname === '/') {
-      navigate('/recipes')
+      navigate('/swipe')
     }
   }, [authed, pathname, navigate])
 

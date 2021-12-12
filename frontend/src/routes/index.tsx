@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { MdFastfood } from 'react-icons/md'
 import { BiFoodMenu } from 'react-icons/bi'
 import { Route, Routes, useLocation } from "react-router-dom"
@@ -19,20 +19,23 @@ const RoutesElement = () => {
   const location = useLocation()
   const { authed } = useAuth()
 
+
+  const splitLocation = location.pathname.split('/')
+
   return (
     <>
       <TransitionGroup component={null}>
         <CSSTransition key={location.key} classNames="fade" timeout={300}>
           <Routes>
             <Route path="/" element={<App />}>
-              <Route path="recipes" element={
-                <RequireAuth>
-                  <Recipes />
-                </RequireAuth>
-                } />
               <Route path="swipe" element={
                 <RequireAuth>
                   <Swipe />
+                </RequireAuth>
+                } />
+              <Route path="recipes" element={
+                <RequireAuth>
+                  <Recipes />
                 </RequireAuth>
                 } />
               <Route path="login" element={<Login />} />
@@ -44,16 +47,16 @@ const RoutesElement = () => {
       {authed &&
         <>
           <Logout/>
-          <Link to="/recipes">
-            <div className="navIcon">
-              <BiFoodMenu size="30px" />
-            </div>
-          </Link>
-          <Link to="/swipe">
-            <div className="navIcon">
+          <NavLink to="/swipe">
+            <div className={`navIcon ${splitLocation[1] === 'swipe' && 'active'}`}>
               <MdFastfood size="30px"/>
             </div>
-          </Link>
+          </NavLink>
+          <NavLink to="/recipes">
+            <div className={`navIcon ${splitLocation[1] === 'recipes' && 'active'}`}>
+              <BiFoodMenu size="30px" />
+            </div>
+          </NavLink>
         </>
       }
       </nav>

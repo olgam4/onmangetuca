@@ -25,7 +25,7 @@ const CreateSession = () => {
 
 const JoinSesion = () => {
   const { joinSession } = useSession()
-  const [code, setCode] = useState('')
+  const [code, setCode] = useState('a9ot8')
 
   const handleChange = (e: any) => {
     setCode(e.target.value)
@@ -59,7 +59,7 @@ const JoinSesion = () => {
 }
 
 const Swipe = () => {
-  const { connected, restaurants, sessionId, swipe } = useSession()
+  const { loading, connected, restaurants, sessionId, swipe } = useSession()
 
   const ref = useRef(null)
 
@@ -82,31 +82,41 @@ const Swipe = () => {
   }
 
   const both = (photo: string) => {
-    const linearGradient = `linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0) 18%)`
+    const linearGradient = `linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0) 22%)`
     const backgroundImage = `url(${photo})`
     return `${linearGradient}, ${backgroundImage}`
   }
 
-  return connected ?
+  return loading ?
     (
       <div className={style.session}>
+        {
+          !connected && (
+            <div className={style.cardContainer}>
+              <div className={style.cardLoading}>
+                <div className={style.loading} />
+              </div>
+            </div>
+          )
+        }
         <div className={style.cardContainer}>
-          {[restaurants[0]].map((restaurant, index) => (
+          {restaurants.map((restaurant, index) => {
+            return (
             <Card
-              ref={ref}
               className="swipe"
               preventSwipe={['up', 'down']}
               onSwipe={(direction) => onSwipe(direction, index)}
-              key={index}
+              key={restaurant.id}
             >
               <div 
                 className={style.card}
                 style={{ backgroundImage: both(restaurant.photo) }}
               >
                 <h3>{restaurant.name}</h3>
+                <p>{restaurant.address}</p>
               </div>
             </Card>
-          ))}
+          )})}
         </div>
         <div className={style.info}>
           <div>{sessionId}</div>
