@@ -16,9 +16,7 @@ import axios from 'axios'
     {
       provide: 'RestaurantFinder',
       useClass:
-        process.env.NODE_ENV === 'development'
-          ? OpenSourceRestaurantFinder
-          : PlacesAPIRestaurantFinder,
+          OpenSourceRestaurantFinder
     },
     {
       provide: 'SessionRepository',
